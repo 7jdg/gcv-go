@@ -40,37 +40,36 @@ package main
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/gagliardetto/gcv-go"
+	gcv "github.com/gagliardetto/gcv-go"
 	"io/ioutil"
 )
 
+func init() {
+
+}
+
 func main() {
 
-	credentials := gcvgo.Credentials{
-		APIkey: "<your api key>",
+	credentials := gcv.Credentials{
+		APIkey: "<your api key",
 	}
-	client, err := gcvgo.NewClient(credentials)
+	client, err := gcv.NewClient(credentials)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	requests := gcvgo.Requests{}
-
-	req := gcvgo.Request{}
-
-	imageData, err := ioutil.ReadFile("google.png")
+	imageData, err := ioutil.ReadFile("/path/to/a/file/with/a/logo")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
 	base64Content := base64.StdEncoding.EncodeToString(imageData)
 
+	requests := gcv.Requests{}
+	req := gcv.Request{}
 	req.AddImageFromBase64(base64Content)
-
-	req.Features.Add(gcvgo.LOGO_DETECTION, 1)
-
+	req.Features.Add(gcv.LOGO_DETECTION, 1)
 	requests.Add(req)
 
 	response, err := client.Do(requests)
@@ -82,5 +81,6 @@ func main() {
 	fmt.Printf("This is a %v logo (score: %v)", response[0].LogoAnnotations[0].Description, response[0].LogoAnnotations[0].Score)
 
 }
+
 
 ```

@@ -26,4 +26,61 @@ go get -u github.com/gagliardetto/gcv-go
 
 # Getting Started
 
+To get started, create a new project on Google Cloud Console, activate Google Cloud Vision, and obtain an API key.
+
+To do all of this, you can follow this guide:
+
 # Examples
+
+#### Recognize a logo
+
+```go
+package main
+
+import (
+	"encoding/base64"
+	"fmt"
+	"github.com/gagliardetto/gcv-go"
+	"io/ioutil"
+)
+
+func main() {
+
+	credentials := gcvgo.Credentials{
+		APIkey: "<your api key>",
+	}
+	client, err := gcvgo.NewClient(credentials)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	requests := gcvgo.Requests{}
+
+	req := gcvgo.Request{}
+
+	imageData, err := ioutil.ReadFile("google.png")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	base64Content := base64.StdEncoding.EncodeToString(imageData)
+
+	req.AddImageFromBase64(base64Content)
+
+	req.Features.Add(gcvgo.LOGO_DETECTION, 1)
+
+	requests.Add(req)
+
+	response, err := client.Do(requests)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Printf("This is a %v logo (score: %v)", response[0].LogoAnnotations[0].Description, response[0].LogoAnnotations[0].Score)
+
+}
+
+```

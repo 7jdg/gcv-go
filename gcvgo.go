@@ -47,7 +47,11 @@ func (client *Client) Do(reqs Requests) ([]Response, error) {
 		return []Response{}, err
 	}
 	fmt.Println(string(JSONPayload))
+
 	response, _, err := client.fetchAndReturnPage(JSONPayload)
+	if err != nil {
+		return []Response{}, err
+	}
 
 	fmt.Println(string(response))
 
@@ -82,7 +86,6 @@ func (client *Client) fetchAndReturnPage(body []byte) ([]byte, http.Header, erro
 	request.Header.Add("Connection", "Keep-Alive")
 	request.Header.Add("Accept-Encoding", "gzip, deflate")
 	request.Header.Add("Content-Type", "application/json")
-	//request.Header.Add("Authorization", "Bearer "+client.Credentials.APIkey)
 
 	response, err := client.httpClient.Do(request)
 	if err != nil {
@@ -109,10 +112,14 @@ func (client *Client) fetchAndReturnPage(body []byte) ([]byte, http.Header, erro
 	}
 
 	if response.StatusCode > 299 || response.StatusCode < 199 {
+		var apiError Status
+		err = json.Unmarshal(responseBody, &apiError)
+		if err != nil {
+			return []byte(""), http.Header{}, nil
+		}
 		fmt.Println(response.StatusCode)
 		fmt.Println(string(responseBody))
-
-		return []byte(""), http.Header{}, err
+		return responseBody, response.Header, fmt.Errorf("%s", responseBody)
 	}
 
 	return responseBody, response.Header, nil

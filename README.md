@@ -10,7 +10,7 @@ Library written in Golang that provides easy access to the Google Cloud Vision R
 
 # Current Status
 
-Initial commit.
+Initial version.
 
 # Requirements
 

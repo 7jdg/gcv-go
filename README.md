@@ -49,7 +49,6 @@ func init() {
 }
 
 func main() {
-
 	credentials := gcv.Credentials{
 		APIkey: "<your api key",
 	}
@@ -79,7 +78,6 @@ func main() {
 	}
 
 	fmt.Printf("This is a %v logo (score: %v)", response[0].LogoAnnotations[0].Description, response[0].LogoAnnotations[0].Score)
-
 }
 
 

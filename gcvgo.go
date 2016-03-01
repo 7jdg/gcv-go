@@ -46,14 +46,14 @@ func (client *Client) Do(reqs Requests) ([]Response, error) {
 	if err != nil {
 		return []Response{}, err
 	}
-	fmt.Println(string(JSONPayload))
+	//fmt.Println(string(JSONPayload))
 
 	response, _, err := client.fetchAndReturnPage(JSONPayload)
 	if err != nil {
 		return []Response{}, err
 	}
 
-	fmt.Println(string(response))
+	//fmt.Println(string(response))
 
 	var result struct {
 		Responses []Response `json:"responses"`
@@ -75,7 +75,7 @@ func (client *Client) fetchAndReturnPage(body []byte) ([]byte, http.Header, erro
 	}
 	requestURL.Path = "/v1/images:annotate"
 
-	fmt.Println(requestURL)
+	//fmt.Println(requestURL)
 
 	request, err := http.NewRequest("POST", requestURL.String(), bytes.NewBuffer(body))
 	if err != nil {

@@ -28,7 +28,7 @@ go get -u github.com/gagliardetto/gcv-go
 
 To get started, create a new project on Google Cloud Console, activate Google Cloud Vision, and obtain an API key.
 
-To do all of this, you can follow this guide:
+To do all of this, you can follow this guide: https://cloud.google.com/vision/docs/getting-started
 
 # Examples
 

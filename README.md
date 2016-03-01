@@ -4,33 +4,33 @@
 [![GitHub license](https://img.shields.io/github/license/gagliardetto/gcv-go.svg)](https://github.com/gagliardetto/gcv-go/blob/master/LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gagliardetto/gcv-go)](https://goreportcard.com/report/github.com/gagliardetto/gcv-go)
 
-# Description
+## Description
 
 Library written in Golang that provides easy access to the Google Cloud Vision REST API. Google is not affiliated and does not endorse or recommend gcv-go.
 
-# Current Status
+## Current Status
 
 Initial version.
 
-# Requirements
+## Requirements
 
 + Go 1.4 or higher
 + Google Cloud account
 + API key
 
-# Installation
+## Installation
 
 ```
 go get -u github.com/gagliardetto/gcv-go
 ```
 
-# Getting Started
+## Getting Started
 
 To get started, create a new project on Google Cloud Console, activate Google Cloud Vision, and obtain an API key.
 
 To do all of this, you can follow this guide: https://cloud.google.com/vision/docs/getting-started
 
-# Examples
+## Examples
 
 #### Recognize a logo
 

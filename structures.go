@@ -35,7 +35,7 @@ type Request struct {
 	} `json:"imageContext,omitempty"`
 }
 
-type Requests []Request
+type RequestBatch []Request
 
 //
 

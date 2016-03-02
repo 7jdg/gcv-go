@@ -26,7 +26,7 @@ go get -u github.com/gagliardetto/gcv-go
 
 ## Getting Started
 
-To get started, create a new project on Google Cloud Console, activate Google Cloud Vision, and obtain an API key.
+To get started, create a new project on Google Cloud Console, activate Google Cloud Vision API, and obtain an API key.
 
 To do all of this, you can follow this guide: https://cloud.google.com/vision/docs/getting-started
 
@@ -38,19 +38,13 @@ To do all of this, you can follow this guide: https://cloud.google.com/vision/do
 package main
 
 import (
-	"encoding/base64"
 	"fmt"
 	gcv "github.com/gagliardetto/gcv-go"
-	"io/ioutil"
 )
-
-func init() {
-
-}
 
 func main() {
 	credentials := gcv.Credentials{
-		APIkey: "<your api key",
+		APIkey: "<my api key>",
 	}
 	client, err := gcv.NewClient(credentials)
 	if err != nil {
@@ -58,20 +52,15 @@ func main() {
 		return
 	}
 
-	imageData, err := ioutil.ReadFile("/path/to/a/file/with/a/logo")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	base64Content := base64.StdEncoding.EncodeToString(imageData)
+	requestBatch := gcv.RequestBatch{}
 
-	requests := gcv.Requests{}
-	req := gcv.Request{}
-	req.AddImageFromBase64(base64Content)
-	req.Features.Add(gcv.LOGO_DETECTION, 1)
-	requests.Add(req)
+	request := gcv.Request{}
+	request.AddImageFromFile("google.png")
+	request.Features.Add(gcv.LOGO_DETECTION, 1)
+	
+	requestBatch.Add(request)
 
-	response, err := client.Do(requests)
+	response, err := client.Do(requestBatch)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -79,6 +68,5 @@ func main() {
 
 	fmt.Printf("This is a %v logo (score: %v)", response[0].LogoAnnotations[0].Description, response[0].LogoAnnotations[0].Score)
 }
-
 
 ```

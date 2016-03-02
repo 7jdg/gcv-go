@@ -3,6 +3,7 @@ package gcvgo
 import (
 	"bytes"
 	"compress/gzip"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -21,12 +22,22 @@ func NewClient(credentials Credentials) (Client, error) {
 	}, nil
 }
 
-func (reqs *Requests) Add(request Request) {
+func (reqs *RequestBatch) Add(request Request) {
 	*reqs = append(*reqs, request)
 }
 
 func (request *Request) AddImageFromBase64(base64Content string) {
 	request.Image.Content = base64Content
+}
+
+func (request *Request) AddImageFromFile(filePath string) error {
+	imageData, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+	base64Content := base64.StdEncoding.EncodeToString(imageData)
+	request.Image.Content = base64Content
+	return nil
 }
 
 func (features *Features) Add(featureType FeatureType, MaxResults int64) {
@@ -36,9 +47,9 @@ func (features *Features) Add(featureType FeatureType, MaxResults int64) {
 	})
 }
 
-func (client *Client) Do(reqs Requests) ([]Response, error) {
+func (client *Client) Do(reqs RequestBatch) ([]Response, error) {
 	payload := struct {
-		Requests Requests `json:"requests"`
+		Requests RequestBatch `json:"requests"`
 	}{
 		Requests: reqs,
 	}

@@ -40,6 +40,11 @@ func (request *Request) AddImageFromFile(filePath string) error {
 	return nil
 }
 
+func (request *Request) AddImageFromGCSURI(gcsURI string) error {
+	request.Image.Source.GcsImageUri = gcsUri
+	return nil
+}
+
 func (features *Features) Add(featureType FeatureType, MaxResults int64) {
 	*features = append(*features, Feature{
 		Type:       featureType,

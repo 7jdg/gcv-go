@@ -32,7 +32,7 @@ To do all of this, you can follow this guide: https://cloud.google.com/vision/do
 
 ## Examples
 
-#### Recognize a logo
+#### Run face detection
 
 ```go
 package main
@@ -55,7 +55,85 @@ func main() {
 	requestBatch := gcv.RequestBatch{}
 
 	request := gcv.Request{}
-	request.AddImageFromFile("google.png")
+	request.AddImageFromFile("<image filepath>")
+	request.Features.Add(gcv.FACE_DETECTION, 1)
+	
+	requestBatch.Add(request)
+
+	response, err := client.Do(requestBatch)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(response[0].FaceAnnotations)
+}
+
+```
+
+#### Run landmark detection
+
+```go
+package main
+
+import (
+	"fmt"
+	gcv "github.com/gagliardetto/gcv-go"
+)
+
+func main() {
+	credentials := gcv.Credentials{
+		APIkey: "<my api key>",
+	}
+	client, err := gcv.NewClient(credentials)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	requestBatch := gcv.RequestBatch{}
+
+	request := gcv.Request{}
+	request.AddImageFromFile("<image filepath>")
+	request.Features.Add(gcv.LANDMARK_DETECTION, 1)
+	
+	requestBatch.Add(request)
+
+	response, err := client.Do(requestBatch)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(response[0].LandmarkAnnotations)
+}
+
+```
+
+#### Run logo detection
+
+```go
+package main
+
+import (
+	"fmt"
+	gcv "github.com/gagliardetto/gcv-go"
+)
+
+func main() {
+	credentials := gcv.Credentials{
+		APIkey: "<my api key>",
+	}
+	client, err := gcv.NewClient(credentials)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	requestBatch := gcv.RequestBatch{}
+
+	request := gcv.Request{}
+	request.AddImageFromFile("<image filepath>")
 	request.Features.Add(gcv.LOGO_DETECTION, 1)
 	
 	requestBatch.Add(request)
@@ -66,7 +144,163 @@ func main() {
 		return
 	}
 
-	fmt.Printf("This is a %v logo (score: %v)", response[0].LogoAnnotations[0].Description, response[0].LogoAnnotations[0].Score)
+	fmt.Printf(response[0].LogoAnnotations)
+}
+
+```
+
+#### Run label detection
+
+```go
+package main
+
+import (
+	"fmt"
+	gcv "github.com/gagliardetto/gcv-go"
+)
+
+func main() {
+	credentials := gcv.Credentials{
+		APIkey: "<my api key>",
+	}
+	client, err := gcv.NewClient(credentials)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	requestBatch := gcv.RequestBatch{}
+
+	request := gcv.Request{}
+	request.AddImageFromFile("<image filepath>")
+	request.Features.Add(gcv.LABEL_DETECTION, 1)
+	
+	requestBatch.Add(request)
+
+	response, err := client.Do(requestBatch)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(response[0].LabelAnnotations)
+}
+
+```
+
+#### Run OCR
+
+```go
+package main
+
+import (
+	"fmt"
+	gcv "github.com/gagliardetto/gcv-go"
+)
+
+func main() {
+	credentials := gcv.Credentials{
+		APIkey: "<my api key>",
+	}
+	client, err := gcv.NewClient(credentials)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	requestBatch := gcv.RequestBatch{}
+
+	request := gcv.Request{}
+	request.AddImageFromFile("<image filepath>")
+	request.Features.Add(gcv.TEXT_DETECTION, 1)
+	
+	requestBatch.Add(request)
+
+	response, err := client.Do(requestBatch)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(response[0].TextAnnotations)
+}
+
+```
+
+#### Compute image safe-search properties
+
+```go
+package main
+
+import (
+	"fmt"
+	gcv "github.com/gagliardetto/gcv-go"
+)
+
+func main() {
+	credentials := gcv.Credentials{
+		APIkey: "<my api key>",
+	}
+	client, err := gcv.NewClient(credentials)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	requestBatch := gcv.RequestBatch{}
+
+	request := gcv.Request{}
+	request.AddImageFromFile("<image filepath>")
+	request.Features.Add(gcv.SAFE_SEARCH_DETECTION, 1)
+	
+	requestBatch.Add(request)
+
+	response, err := client.Do(requestBatch)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(response[0].SafeSearchAnnotation)
+}
+
+```
+
+#### Compute a set of properties about the image
+
+```go
+package main
+
+import (
+	"fmt"
+	gcv "github.com/gagliardetto/gcv-go"
+)
+
+func main() {
+	credentials := gcv.Credentials{
+		APIkey: "<my api key>",
+	}
+	client, err := gcv.NewClient(credentials)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	requestBatch := gcv.RequestBatch{}
+
+	request := gcv.Request{}
+	request.AddImageFromFile("<image filepath>")
+	request.Features.Add(gcv.IMAGE_PROPERTIES, 1)
+	
+	requestBatch.Add(request)
+
+	response, err := client.Do(requestBatch)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(response[0].ImagePropertiesAnnotation)
 }
 
 ```
